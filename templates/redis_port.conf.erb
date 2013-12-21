@@ -410,3 +410,6 @@ activerehashing yes
 #
 # include /path/to/local.conf
 # include /path/to/other.conf
+<% if @redis_include_conf_path %>
+include <% @redis_include_conf_path %>
+<% end %>
