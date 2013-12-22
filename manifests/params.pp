@@ -28,5 +28,9 @@ class redis::params {
   $redis_slowlog_max_len = 1024
   $redis_password = false
   $redis_include_conf_path = false
+  $redis_slaveof = false
+  $redis_masterauth = false
+  $redis_slave_serve_stale_data = 'yes'
+  $redis_max_memory_policy = false
 
 }

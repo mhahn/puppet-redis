@@ -48,7 +48,11 @@ class redis (
   $redis_slowlog_log_slower_than = $redis::params::redis_slowlog_log_slower_than,
   $redis_slowlog_max_len = $redis::params::redis_slowlog_max_len,
   $redis_password = $redis::params::password,
-  $redis_include_conf_path = $redis::params::include_conf_path
+  $redis_include_conf_path = $redis::params::include_conf_path,
+  $redis_slaveof = $redis::params::redis_slaveof,
+  $redis_masterauth = $redis::params::redis_masterauth,
+  $redis_slave_serve_stale_data = $redis::params::redis_slave_serve_stale_data,
+  $redis_max_memory_policy = $redis::params::redis_max_memory_policy
 ) inherits redis::params {
 
   include wget
@@ -70,6 +74,10 @@ class redis (
     redis_slowlog_max_len => $redis_slowlog_max_len,
     redis_password => $redis_password,
     redis_include_conf_path => $redis_include_conf_path,
+    redis_slaveof => $redis_slaveof,
+    redis_masterauth => $redis_masterauth,
+    redis_slave_serve_stale_data => $redis_slave_serve_stale_data,
+    redis_max_memory_policy => $redis_max_memory_policy,
   }
 
   File {
