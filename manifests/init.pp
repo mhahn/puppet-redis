@@ -58,7 +58,19 @@ class redis (
   $redis_pkg = "${redis_src_dir}/${redis_pkg_name}"
 
   # Install default instance
-  redis::instance { 'redis-default': }
+  redis::instance { 'redis-default':
+    redis_port => $redis_port,
+    redis_bind_address => $redis_bind_address,
+    redis_max_memory => $redis_max_memory,
+    redis_max_clients => $redis_max_clients,
+    redis_timeout => $redis_timeout,
+    redis_loglevel => $redis_loglevel,
+    redis_databases => $redis_databases,
+    redis_slowlog_log_slower_than => $redis_slowlog_log_slower_than,
+    redis_slowlog_max_len => $redis_slowlog_max_len,
+    redis_password => $redis_password,
+    redis_include_conf_path => $redis_include_conf_path,
+  }
 
   File {
     owner => root,
