@@ -37,7 +37,18 @@
 class redis (
   $version = $redis::params::version,
   $redis_src_dir = $redis::params::redis_src_dir,
-  $redis_bin_dir = $redis::params::redis_bin_dir
+  $redis_bin_dir = $redis::params::redis_bin_dir,
+  $redis_port = $redis::params::redis_port,
+  $redis_bind_address = $redis::params::redis_bind_address,
+  $redis_max_memory = $redis::params::redis_max_memory,
+  $redis_max_clients = $redis::params::redis_max_clients,
+  $redis_timeout = $redis::params::redis_timeout,
+  $redis_loglevel = $redis::params::redis_loglevel,
+  $redis_databases = $redis::params::redis_databases,
+  $redis_slowlog_log_slower_than = $redis::params::redis_slowlog_log_slower_than,
+  $redis_slowlog_max_len = $redis::params::redis_slowlog_max_len,
+  $redis_password = $redis::params::password,
+  $redis_include_conf_path = $redis::params::include_conf_path
 ) inherits redis::params {
 
   include wget
