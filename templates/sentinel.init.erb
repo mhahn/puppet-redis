@@ -1,25 +1,24 @@
 #!/bin/sh
 #Configurations injected by install_server below....
 
-REDIS_PORT="<%= @redis_port %>"
-REDIS_BIND_ADDRESS="<%= @redis_bind_address ? @redis_bind_address : '127.0.0.1' %>"
+SENTINEL_PORT="<%= @sentinel_port %>"
 
-EXEC=<%= scope.lookupvar('redis::redis_bin_dir') %>/bin/redis-server
-CLIEXEC="<%= scope.lookupvar('redis::redis_bin_dir') %>/bin/redis-cli -h $REDIS_BIND_ADDRESS -p $REDIS_PORT <%= @redis_password ? '-a ' + @redis_password : '' %>"
-PIDFILE="/var/run/redis_${REDIS_PORT}.pid"
-CONF="/etc/redis/${REDIS_PORT}.conf"
+CONF="/etc/redis/${SENTINEL_PORT}.conf"
+EXEC="<%= scope.lookupvar('redis::redis_bin_dir') %>/bin/redis-server $CONF --sentinel"
+CLIEXEC="<%= scope.lookupvar('redis::redis_bin_dir') %>/bin/redis-cli -p $SENTINEL_PORT"
+PIDFILE="/var/run/redis_${SENTINEL_PORT}.pid"
 
 ###############
 
 # chkconfig: 2345 95 20
-# description: redis_<%= @redis_port %> is the redis daemon.
+# description: redis_<%= @sentinel_port %> is the sentinel daemon.
 ### BEGIN INIT INFO
-# Provides: redis_<%= @redis_port %>
+# Provides: redis_<%= @sentinel_port %>
 # Required-Start:
 # Required-Stop:
 # Should-Start:
 # Should-Stop:
-# Short-Description: start and stop redis_<%= @redis_port %>
+# Short-Description: start and stop redis_<%= @sentinel_port %>
 # Description: Redis daemon
 ### END INIT INFO
 
@@ -31,8 +30,8 @@ start()
     then
         echo "$PIDFILE exists, process is already running or crashed"
     else
-        echo "Starting Redis server..."
-        $EXEC $CONF
+        echo "Starting sentinel..."
+        $EXEC
     fi
 }
 
@@ -43,14 +42,9 @@ stop()
         echo "$PIDFILE does not exist, process is not running"
     else
         PID=$(cat $PIDFILE)
-        echo "Stopping ..."
-        $CLIEXEC shutdown || /bin/true
-        while [ -x /proc/${PID} ]
-        do
-            echo "Waiting for Redis to shutdown ..."
-            sleep 1
-        done
-        echo "Redis stopped"
+        echo "Stopping sentinel ($PID)..."
+        kill $PID
+        echo "Sentinel stopped"
     fi
 }
 
@@ -73,7 +67,7 @@ status()
   echo "$PIDFILE exists, process is not running though"
   exit 1
     else
-  echo "redis is running with PID $(cat $PIDFILE)"
+  echo "sentinel is running with PID $(cat $PIDFILE)"
   exit 0
     fi
 }

@@ -32,5 +32,16 @@ class redis::params {
   $redis_masterauth = false
   $redis_slave_serve_stale_data = 'yes'
   $redis_max_memory_policy = false
+  $sentinel_port = '26379'
+  $sentinel_master_bind_address = false
+  $sentinel_master_port = '6379'
+  $sentinel_quorum_size = 1
+  $sentinel_loglevel = 'notice'
+  $sentinel_master_auth = false
+  $sentinel_down_after_milliseconds = 30000
+  $sentinel_parallel_syncs = 1
+  $sentinel_failover_timeout = 180000
+  $sentinel_notification_script = false
+  $sentinel_client_reconfig_script = false
 
 }
