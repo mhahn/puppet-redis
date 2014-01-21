@@ -110,14 +110,14 @@ class redis (
     command => "tar --strip-components 1 -xzf ${redis_pkg}",
     cwd     => $redis_src_dir,
     path    => '/bin:/usr/bin',
-    unless  => "test -f ${redis_src_dir}/Makefile",
+    unless  => "test -f ${redis_src_dir}/src/version.h && cat ${redis_src_dir}/src/version.sh | grep ${version}",
     require => Exec['get-redis-pkg'],
   }
   exec { 'install-redis':
     command => "make && make install PREFIX=${redis_bin_dir}",
     cwd     => $redis_src_dir,
     path    => '/bin:/usr/bin',
-    unless  => "test $(${redis_bin_dir}/bin/redis-server --version | cut -d ' ' -f 1) = 'Redis'",
+    unless  => "test $(${redis_bin_dir}/bin/redis-server --version | cut -d '=' -f 2 | cut -d ' ' -f 1) = '${version}'",
     require => [ Exec['unpack-redis'], Class['gcc'] ],
   }
 
